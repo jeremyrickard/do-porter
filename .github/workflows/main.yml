@@ -1,0 +1,12 @@
+name: CI
+
+on: [push]
+
+jobs:
+  porter:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Build
+      run: |
+        curl https://deislabs.blob.core.windows.net/porter/latest/install-linux.sh | bash
