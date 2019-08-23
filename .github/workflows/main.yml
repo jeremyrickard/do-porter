@@ -8,7 +8,9 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - uses: actions/docker/login@master
-    - secrets: ["DOCKER_USERNAME", "DOCKER_PASSWORD"]
+    - env: 
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     - name: Build
       run: |
         curl https://deislabs.blob.core.windows.net/porter/latest/install-linux.sh | bash
