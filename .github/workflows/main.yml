@@ -7,8 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - uses: actions/docker/login@master
+    - secrets: ["DOCKER_USERNAME", "DOCKER_PASSWORD"]
     - name: Build
       run: |
         curl https://deislabs.blob.core.windows.net/porter/latest/install-linux.sh | bash
         PATH=$PATH:~/.porter
         porter build
+        porter publish
