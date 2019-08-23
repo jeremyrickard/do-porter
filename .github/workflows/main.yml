@@ -10,3 +10,5 @@ jobs:
     - name: Build
       run: |
         curl https://deislabs.blob.core.windows.net/porter/latest/install-linux.sh | bash
+        PATH=$PATH:~/.porter
+        porter build
