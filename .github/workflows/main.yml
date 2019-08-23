@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - uses: actions/docker/login@master
-      with: 
+      env: 
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     - name: Build 
