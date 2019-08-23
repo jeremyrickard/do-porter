@@ -8,13 +8,12 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - uses: actions/docker/login@master
-      env: 
+      env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     - name: Build 
       run: |
         curl https://deislabs.blob.core.windows.net/porter/latest/install-linux.sh | bash
         PATH=$PATH:~/.porter
-        echo $(ls -l $HOME/.docker)
-        porter build
+        echo $(ls -l $HOME/work/_temp/_github_home/.docker)
         porter publish
