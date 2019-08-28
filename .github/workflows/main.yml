@@ -15,5 +15,4 @@ jobs:
         echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
         curl https://deislabs.blob.core.windows.net/porter/latest/install-linux.sh | bash
         PATH=$PATH:~/.porter
-        echo $(ls -l $HOME/work/_temp/_github_home/.docker)
         porter publish
