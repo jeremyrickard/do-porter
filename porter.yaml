@@ -20,6 +20,8 @@ credentials:
   env: DO_SPACES_KEY
 - name: do_spaces_secret
   env: DO_SPACES_SECRET
+- name: kubeconfig
+  path: /root/.kube/config
 
 parameters:
 - name: region
@@ -32,9 +34,21 @@ parameters:
   type: string
   default: "jrrportertest"
 
+outputs:
+- name: service_ip
+  type: string
+
 mixins:
   - exec
+  - helm
   - terraform
+
+imageMap:
+  spring-music:
+      description: "Spring Music Example"
+      imageType: "docker"
+      image: "jeremyrickard/spring-music@sha256:8f1133d81f1b078c865cdb11d17d1ff15f55c449d3eecca50190eed0f5e5e26f"
+      digest: "sha256:8f1133d81f1b078c865cdb11d17d1ff15f55c449d3eecca50190eed0f5e5e26f"
 
 install:
   - exec:
@@ -61,6 +75,43 @@ install:
         do_token: "{{bundle.credentials.do_access_token}}"
         region: "{{bundle.parameters.region}}"
         database_name: "{{bundle.parameters.database_name}}"
+      outputs:
+      - name: "db_host"
+      - name: "db_port"
+      - name: "db"
+      - name: "db_user"
+      - name: "db_password"
+  - helm:
+      description: "Deploy Spring Music with Helm"
+      name: spring-music-helm
+      chart: charts/spring-music
+      replace: true
+      set:
+        deploy.image: "jeremyrickard/spring-music@sha256:8f1133d81f1b078c865cdb11d17d1ff15f55c449d3eecca50190eed0f5e5e26f"
+        deploy.profile: "postgresql"
+        deploy.db: "{{bundle.outputs.db}}"
+        deploy.db_user: "{{bundle.outputs.db_user}}"
+        deploy.db_password: "{{bundle.outputs.db_password}}"
+        deploy.db_host: "{{bundle.outputs.db_host}}"
+        deploy.db_port: "{{bundle.outputs.db_port}}"
+  - exec:
+      description: "Wait for IP"
+      command: "bash"
+      arguments:
+        - "waitForIP.sh"
+        - "spring-music"
+  - exec:
+      description: "Get Ingress IP"
+      command: "kubectl"
+      arguments:
+        - "get"
+        - "service"
+        - "spring-music"
+      flags:
+        o: "json"
+      outputs:
+        - name: "service_ip"
+          jsonPath: "$.status.loadBalancer.ingress[0].ip"
 
 upgrade:
   - exec:
@@ -71,6 +122,10 @@ upgrade:
         - echo World 2.0
 
 uninstall:
+  # - helm:
+  #     description: "Deploy Spring Music with Helm"
+  #     name: spring-music-helm
+  #     chart: charts/spring-music
   - terraform:
       description: "Create DO PostgreSQL With Terraform"
       autoApprove: true

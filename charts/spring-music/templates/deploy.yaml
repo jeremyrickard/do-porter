@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-music
+spec:
+  selector:
+    matchLabels:
+      app: spring-music
+  replicas: {{.Values.deploy.replicas}}
+  template:
+    metadata:
+      labels:
+        app: spring-music
+    spec:
+      containers:
+      - name: spring-music
+        image: "{{.Values.deploy.image}}"
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "1.0"
+          limits:
+            memory: "1024Mi"
+            cpu: "2.0"
+        ports:
+        - containerPort: {{.Values.deploy.containerPort}}
+        env:
+        - name: RUNTIME
+          value: kubernetes
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{.Values.deploy.profile}}"
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:postgresql://{{ .Values.deploy.db_host | nospace }}:{{ .Values.deploy.db_port | nospace }}/{{ .Values.deploy.db | nospace }}?sslmode=require&user={{ .Values.deploy.db_user | nospace }}&password={{ .Values.deploy.db_password | nospace }}"

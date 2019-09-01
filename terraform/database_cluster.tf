@@ -1,4 +1,4 @@
-resource "digitalocean_database_cluster" "wordpress" {
+resource "digitalocean_database_cluster" "music" {
   name       = "${var.database_name}"
   engine     = "pg"
   version    = "10"

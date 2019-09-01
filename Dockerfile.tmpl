@@ -3,7 +3,11 @@ FROM debian:stretch
 ARG BUNDLE_DIR
 
 RUN apt-get update && apt-get install -y ca-certificates s3cmd
-
+RUN apt-get update && apt-get install -y apt-transport-https curl && \
+    curl -o kubectl https://storage.googleapis.com/kubernetes-release/release/v1.13.0/bin/linux/amd64/kubectl && \
+    mv kubectl /usr/local/bin && \
+    chmod a+x /usr/local/bin/kubectl
+    
 # This is a template Dockerfile for the bundle's invocation image
 # You can customize it to use different base images, install tools and copy configuration files.
 #
@@ -17,8 +21,3 @@ COPY .cnab /cnab
 
 # Use the BUNDLE_DIR build argument to copy files into the bundle
 COPY . $BUNDLE_DIR
-
-#RUN apt-get update && apt-get install -y wget
-#RUN wget https://github.com/digitalocean/doctl/releases/download/v1.28.0/doctl-1.28.0-linux-amd64.tar.gz
-#RUN tar xf doctl-1.28.0-linux-amd64.tar.gz
-#RUN mv doctl /usr/local/bin

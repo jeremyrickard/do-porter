@@ -1,0 +1,17 @@
+# Default values for chart
+
+deploy:
+  replicas: 1
+  profile: "default"
+  db: ""
+  db_user: ""
+  db_password: ""
+  db_host: ""
+  db_port: ""
+  image: "jeremyrickard/spring-music:latest"
+  containerPort: 8080
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 8080
