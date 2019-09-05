@@ -155,8 +155,8 @@ upgrade:
 uninstall:
   - helm:
       description: "Deploy Spring Music with Helm"
-      name: spring-music-helm
-      chart: charts/spring-music
+      releases: 
+        - spring-music-helm
   - terraform:
       description: "Create DO PostgreSQL With Terraform"
       autoApprove: true
