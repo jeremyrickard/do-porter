@@ -6,8 +6,8 @@
 name: spring-music
 version: 0.1.0
 description: "Run the Spring Music Service on Kubernetes and Digital Ocean PostgreSQL"
-invocationImage: jeremyrickard/porter-do:v0.1.0
-tag: jeremyrickard/porter-do-bundle:v0.1.3
+invocationImage: jeremyrickard/porter-do:v0.2.0
+tag: jeremyrickard/porter-do-bundle:v0.2.0
 
 # Uncomment out the line below to use a template Dockerfile for your invocation image
 dockerfile: Dockerfile.tmpl
@@ -36,6 +36,9 @@ parameters:
 - name: node_count
   type: integer
   default: 1
+- name: helm_release
+  type: string
+  default: "spring-music-helm"
 
 outputs:
 - name: service_ip
@@ -87,7 +90,7 @@ install:
       - name: "db_password"
   - helm:
       description: "Deploy Spring Music with Helm"
-      name: spring-music-helm
+      name: "{{bundle.parameters.helm_release}}"
       chart: charts/spring-music
       replace: true
       set:
@@ -141,7 +144,7 @@ upgrade:
       - name: "db_password"
   - helm:
       description: "Deploy Spring Music with Helm"
-      name: spring-music-helm
+      name: "{{bundle.parameters.helm_release}}"
       chart: charts/spring-music
       replace: true
       set:
@@ -156,7 +159,7 @@ uninstall:
   - helm:
       description: "Deploy Spring Music with Helm"
       releases: 
-        - spring-music-helm
+        - "{{bundle.parameters.helm_release}}"
   - terraform:
       description: "Create DO PostgreSQL With Terraform"
       autoApprove: true
