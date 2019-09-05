@@ -4,10 +4,10 @@
 # Uncomment out the sections below to take full advantage of what Porter can do!
 
 name: spring-music
-version: 0.3.3
+version: 0.3.4
 description: "Run the Spring Music Service on Kubernetes and Digital Ocean PostgreSQL"
-invocationImage: jeremyrickard/porter-do:v0.3.3
-tag: jeremyrickard/porter-do-bundle:v0.3.3
+invocationImage: jeremyrickard/porter-do:v0.3.4
+tag: jeremyrickard/porter-do-bundle:v0.3.4
 
 # Uncomment out the line below to use a template Dockerfile for your invocation image
 dockerfile: Dockerfile.tmpl
