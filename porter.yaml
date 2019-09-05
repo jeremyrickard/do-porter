@@ -4,10 +4,10 @@
 # Uncomment out the sections below to take full advantage of what Porter can do!
 
 name: spring-music
-version: 0.3.2
+version: 0.3.3
 description: "Run the Spring Music Service on Kubernetes and Digital Ocean PostgreSQL"
-invocationImage: jeremyrickard/porter-do:v0.3.2
-tag: jeremyrickard/porter-do-bundle:v0.3.2
+invocationImage: jeremyrickard/porter-do:v0.3.3
+tag: jeremyrickard/porter-do-bundle:v0.3.3
 
 # Uncomment out the line below to use a template Dockerfile for your invocation image
 dockerfile: Dockerfile.tmpl
@@ -153,7 +153,6 @@ upgrade:
       name: "{{bundle.parameters.helm_release}}"
       namespace: "{{bundle.parameters.namespace}}"
       chart: charts/spring-music
-      replace: true
       set:
         deploy.image: "jeremyrickard/spring-music@sha256:8f1133d81f1b078c865cdb11d17d1ff15f55c449d3eecca50190eed0f5e5e26f"
         deploy.profile: "postgresql"
@@ -165,6 +164,7 @@ upgrade:
 uninstall:
   - helm:
       description: "Deploy Spring Music with Helm"
+      purge: true
       releases: 
         - "{{bundle.parameters.helm_release}}"
   - terraform:
