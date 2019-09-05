@@ -4,5 +4,5 @@ resource "digitalocean_database_cluster" "music" {
   version    = "10"
   size       = "db-s-1vcpu-1gb"
   region     = "${var.region}"
-  node_count = 1
+  node_count = "${var.node_count}"
 }

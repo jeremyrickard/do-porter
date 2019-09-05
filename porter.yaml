@@ -3,9 +3,9 @@
 # See https://porter.sh/authoring-bundles for documentation on how to configure your bundle
 # Uncomment out the sections below to take full advantage of what Porter can do!
 
-name: HELLO
+name: spring-music
 version: 0.1.0
-description: "An example Porter configuration"
+description: "Run the Spring Music Service on Kubernetes and Digital Ocean PostgreSQL"
 invocationImage: jeremyrickard/porter-do:v0.1.0
 tag: jeremyrickard/porter-do-bundle:v0.1.3
 
@@ -33,6 +33,9 @@ parameters:
 - name: database_name
   type: string
   default: "jrrportertest"
+- name: node_count
+  type: integer
+  default: 1
 
 outputs:
 - name: service_ip
@@ -75,6 +78,7 @@ install:
         do_token: "{{bundle.credentials.do_access_token}}"
         region: "{{bundle.parameters.region}}"
         database_name: "{{bundle.parameters.database_name}}"
+        node_count: "{{bundle.parameters.node_count}}"
       outputs:
       - name: "db_host"
       - name: "db_port"
@@ -114,18 +118,6 @@ install:
           jsonPath: "$.status.loadBalancer.ingress[0].ip"
 
 upgrade:
-  - exec:
-      description: "World 2.0"
-      command: bash
-      arguments:
-        - -c
-        - echo World 2.0
-
-uninstall:
-  # - helm:
-  #     description: "Deploy Spring Music with Helm"
-  #     name: spring-music-helm
-  #     chart: charts/spring-music
   - terraform:
       description: "Create DO PostgreSQL With Terraform"
       autoApprove: true
@@ -140,6 +132,46 @@ uninstall:
         do_token: "{{bundle.credentials.do_access_token}}"
         region: "{{bundle.parameters.region}}"
         database_name: "{{bundle.parameters.database_name}}"
+        node_count: "{{bundle.parameters.node_count}}"
+      outputs:
+      - name: "db_host"
+      - name: "db_port"
+      - name: "db"
+      - name: "db_user"
+      - name: "db_password"
+  - helm:
+      description: "Deploy Spring Music with Helm"
+      name: spring-music-helm
+      chart: charts/spring-music
+      replace: true
+      set:
+        deploy.image: "jeremyrickard/spring-music@sha256:8f1133d81f1b078c865cdb11d17d1ff15f55c449d3eecca50190eed0f5e5e26f"
+        deploy.profile: "postgresql"
+        deploy.db: "{{bundle.outputs.db}}"
+        deploy.db_user: "{{bundle.outputs.db_user}}"
+        deploy.db_password: "{{bundle.outputs.db_password}}"
+        deploy.db_host: "{{bundle.outputs.db_host}}"
+        deploy.db_port: "{{bundle.outputs.db_port}}"
+uninstall:
+  - helm:
+      description: "Deploy Spring Music with Helm"
+      name: spring-music-helm
+      chart: charts/spring-music
+  - terraform:
+      description: "Create DO PostgreSQL With Terraform"
+      autoApprove: true
+      input: false
+      backendConfig:
+        key: "{{ bundle.name }}.tfstate"
+        access_key: "{{bundle.credentials.do_spaces_key}}"
+        secret_key: "{{bundle.credentials.do_spaces_secret}}"
+        bucket: "{{bundle.parameters.space_name}}"
+        endpoint: "{{bundle.parameters.region}}.digitaloceanspaces.com"
+      vars:
+        do_token: "{{bundle.credentials.do_access_token}}"
+        region: "{{bundle.parameters.region}}"
+        database_name: "{{bundle.parameters.database_name}}"
+        node_count: "{{bundle.parameters.node_count}}"
   - exec:
       description: "s3cmd delete bucket"
       command: s3cmd
