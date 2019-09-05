@@ -4,10 +4,10 @@
 # Uncomment out the sections below to take full advantage of what Porter can do!
 
 name: spring-music
-version: 0.3.0
+version: 0.3.1
 description: "Run the Spring Music Service on Kubernetes and Digital Ocean PostgreSQL"
-invocationImage: jeremyrickard/porter-do:v0.3.0
-tag: jeremyrickard/porter-do-bundle:v0.3.0
+invocationImage: jeremyrickard/porter-do:v0.3.1
+tag: jeremyrickard/porter-do-bundle:v0.3.1
 
 # Uncomment out the line below to use a template Dockerfile for your invocation image
 dockerfile: Dockerfile.tmpl
@@ -111,6 +111,7 @@ install:
       arguments:
         - "waitForIP.sh"
         - "spring-music"
+        - "{{bundle.parameters.namespace}}"
   - exec:
       description: "Get Ingress IP"
       command: "kubectl"
@@ -120,6 +121,7 @@ install:
         - "spring-music"
       flags:
         o: "json"
+        namespace: "{{bundle.parameters.namespace}}"
       outputs:
         - name: "service_ip"
           jsonPath: "$.status.loadBalancer.ingress[0].ip"
