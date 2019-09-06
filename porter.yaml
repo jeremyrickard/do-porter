@@ -1,7 +1,4 @@
-# This is the configuration for Porter
-# You must define steps for each action, but the rest is optional
 # See https://porter.sh/authoring-bundles for documentation on how to configure your bundle
-# Uncomment out the sections below to take full advantage of what Porter can do!
 
 name: spring-music
 version: 0.3.5
@@ -9,9 +6,7 @@ description: "Run the Spring Music Service on Kubernetes and Digital Ocean Postg
 invocationImage: jeremyrickard/porter-do:v0.3.5
 tag: jeremyrickard/porter-do-bundle:v0.3.5
 
-# Uncomment out the line below to use a template Dockerfile for your invocation image
 dockerfile: Dockerfile.tmpl
-
 
 credentials:
 - name: do_access_token
@@ -72,8 +67,6 @@ install:
         - "--host-bucket=%(bucket)s.{{bundle.parameters.region}}.digitaloceanspaces.com"
   - terraform:
       description: "Create DO PostgreSQL With Terraform"
-      autoApprove: true
-      input: false
       backendConfig:
         key: "{{ bundle.name }}.tfstate"
         access_key: "{{bundle.credentials.do_spaces_key}}"
@@ -129,8 +122,6 @@ install:
 upgrade:
   - terraform:
       description: "Create DO PostgreSQL With Terraform"
-      autoApprove: true
-      input: false
       backendConfig:
         key: "{{ bundle.name }}.tfstate"
         access_key: "{{bundle.credentials.do_spaces_key}}"
@@ -169,8 +160,6 @@ uninstall:
         - "{{bundle.parameters.helm_release}}"
   - terraform:
       description: "Create DO PostgreSQL With Terraform"
-      autoApprove: true
-      input: false
       backendConfig:
         key: "{{ bundle.name }}.tfstate"
         access_key: "{{bundle.credentials.do_spaces_key}}"
@@ -205,17 +194,3 @@ uninstall:
         - "--secret_key={{bundle.credentials.do_spaces_secret}}"
         - "--host={{bundle.parameters.region}}.digitaloceanspaces.com"
         - "--host-bucket=%(bucket)s.{{bundle.parameters.region}}.digitaloceanspaces.com"
-
-
-
-# See https://porter.sh/authoring-bundles/#dependencies
-#dependencies:
-#  mysql:
-#    tag: deislabs/porter-mysql:latest
-#    parameters:
-#      database-name: wordpress
-
-# See https://porter.sh/wiring/#credentials
-#credentials:
-#  - name: kubeconfig
-#    path: /root/.kube/config
