@@ -1,10 +1,10 @@
 # See https://porter.sh/authoring-bundles for documentation on how to configure your bundle
 
 name: spring-music
-version: 0.3.7
+version: 0.3.8
 description: "Run the Spring Music Service on Kubernetes and Digital Ocean PostgreSQL"
 invocationImage: jeremyrickard/porter-do:v0.3.6
-tag: jeremyrickard/porter-do-bundle:v0.3.7
+tag: jeremyrickard/porter-do-bundle:v0.3.8
 
 dockerfile: Dockerfile.tmpl
 
