@@ -3,7 +3,7 @@
 name: spring-music
 version: 0.3.10
 description: "Run the Spring Music Service on Kubernetes and Digital Ocean PostgreSQL"
-invocationImage: jeremyrickard/porter-do:v0.3.6
+3nvocationImage: jeremyrickard/porter-do:v0.3.10
 tag: jeremyrickard/porter-do-bundle:v0.3.10
 
 dockerfile: Dockerfile.tmpl
