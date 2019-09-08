@@ -20,6 +20,9 @@ DO_SPACES_KEY=KIAGKdecafbadS5SSCRC
 DO_ACCESS_KEY=16d225ebdecafbadcff2d05484c78ea8f81f38224940f3c4844c0cdd9996c75c
 ```
 
+NOTE: You need the "secret" values for the Access Token and Spaces Secret, not the name.
+
+
 Next, you'll need a Kubernetes cluster and a `kubeconfig` file. You can use [AKS](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal), [Digital Ocean](https://www.digitalocean.com/products/kubernetes/), any other Kubernetes cluster, as long as it can successfully create a service of type LoadBalancer.
 
 ### Clone This Repo
