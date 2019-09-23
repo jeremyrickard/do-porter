@@ -31,7 +31,7 @@ Porter allows you to work with local bundles, as well as with bundles that have 
 
 ##### Generate a Credential
 
-Once this has finished, you are almost ready to install the bundle. Before you install, however, you'll need to generate a credential. To do this, we'll use the `porter credentials generate` command:
+Before you install this bundle, you'll need to generate a credential. To do this, we'll use the `porter credentials generate` command with the `--tag` option:
 
 ```
 porter credentials generate --tag jeremyrickard/porter-do-bundle:v0.4.0
@@ -62,7 +62,7 @@ Enter the path that will be used to set credential "kubeconfig" $HOME/.kube/conf
 
 #### Install The Bundle
 
-Now that you have build the bundle and generated a credential, you are ready to install the bundle. To do that, we'll use the `porter install` command. You'll need to pick a value for the `space_name` and `database_name` parameter.
+Now that you have build the bundle and generated a credential, you are ready to install the bundle. To do that, we'll use the `porter install` command, again with the `--tag` option. You'll need to pick a value for the `space_name` and `database_name` parameter.
 
 ```
 porter install --tag jeremyrickard/porter-do-bundle:v0.4.0 -c spring-music --param space_name=<SOME VALUE> --param database_name=<SOME VALUE>
@@ -76,6 +76,8 @@ Some other parameters that you can set are:
 * helm_release
 
 ### Build locally
+
+In addition to using the `--tag` option, you can build and install the bundle locally with this repo.
 
 #### Clone This Repo
 
