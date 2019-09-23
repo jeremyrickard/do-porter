@@ -152,6 +152,26 @@ upgrade:
         deploy.db_password: "{{bundle.outputs.db_password}}"
         deploy.db_host: "{{bundle.outputs.db_host}}"
         deploy.db_port: "{{bundle.outputs.db_port}}"
+  - exec:
+      description: "Wait for IP"
+      command: "bash"
+      arguments:
+        - "waitForIP.sh"
+        - "spring-music"
+        - "{{bundle.parameters.namespace}}"
+  - exec:
+      description: "Get Ingress IP"
+      command: "kubectl"
+      arguments:
+        - "get"
+        - "service"
+        - "spring-music"
+      flags:
+        o: "json"
+        namespace: "{{bundle.parameters.namespace}}"
+      outputs:
+        - name: "service_ip"
+          jsonPath: "$.status.loadBalancer.ingress[0].ip"
 uninstall:
   - helm:
       description: "Deploy Spring Music with Helm"
