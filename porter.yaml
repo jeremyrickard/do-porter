@@ -47,11 +47,11 @@ mixins:
   - helm
   - terraform
 
-imageMap:
+images:
   spring-music:
       description: "Spring Music Example"
       imageType: "docker"
-      image: "jeremyrickard/spring-music@sha256:8f1133d81f1b078c865cdb11d17d1ff15f55c449d3eecca50190eed0f5e5e26f"
+      repository: "jeremyrickard/spring-music"
       digest: "sha256:8f1133d81f1b078c865cdb11d17d1ff15f55c449d3eecca50190eed0f5e5e26f"
 
 install:
