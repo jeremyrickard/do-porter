@@ -25,7 +25,59 @@ NOTE: You need the "secret" values for the Access Token and Spaces Secret, not t
 
 Next, you'll need a Kubernetes cluster and a `kubeconfig` file. You can use [AKS](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal), [Digital Ocean](https://www.digitalocean.com/products/kubernetes/), any other Kubernetes cluster, as long as it can successfully create a service of type LoadBalancer.
 
-### Clone This Repo
+### Install from the Tag
+
+Porter allows you to work with local bundles, as well as with bundles that have been published to an OCI registry. If you'd like to try this bundle out without cloning the repository and building locally, follow these steps! If you'd like to experience building a bundle locally, try out the instructions for [building locally](#build-locally).
+
+##### Generate a Credential
+
+Once this has finished, you are almost ready to install the bundle. Before you install, however, you'll need to generate a credential. To do this, we'll use the `porter credentials generate` command:
+
+```
+porter credentials generate --tag jeremyrickard/porter-do-bundle:v0.4.0
+```
+
+This will launch a guided dialog for building a credential. You'll see prompts like this:
+
+```
+Generating new credential spring-music from bundle spring-music
+==> 4 credentials required for bundle spring-music
+? How would you like to set credential "do_access_token"  [Use arrows to move, space to select, type to filter]
+  specific value
+> environment variable
+  file path
+  shell command
+```
+
+For the three digital ocean credentials, select `environment variable` and provide the corresponding value. For the `kubeconfig`, you should select `file path` and give the location of your config file:
+
+```
+? How would you like to set credential "kubeconfig"  [Use arrows to move, space to select, type to filter]
+  specific value
+  environment variable
+> file path
+  shell command
+Enter the path that will be used to set credential "kubeconfig" $HOME/.kube/config
+```
+
+#### Install The Bundle
+
+Now that you have build the bundle and generated a credential, you are ready to install the bundle. To do that, we'll use the `porter install` command. You'll need to pick a value for the `space_name` and `database_name` parameter.
+
+```
+porter install --tag jeremyrickard/porter-do-bundle:v0.4.0 -c spring-music --param space_name=<SOME VALUE> --param database_name=<SOME VALUE>
+```
+
+Some other parameters that you can set are:
+
+* region
+* node_count
+* namespace
+* helm_release
+
+### Build locally
+
+#### Clone This Repo
 
 The first thing you'll need to do in order to try the bundle out is to clone this repo and enter into that directory:
 
@@ -34,7 +86,7 @@ git clone https://github.com/jeremyrickard/do-porter.git
 cd do-porter
 ```
 
-### Build The Bundle
+#### Build The Bundle
 
 Now, you are ready to build the bundle.
 
@@ -42,7 +94,7 @@ Now, you are ready to build the bundle.
 porter build
 ```
 
-### Generate a Credential
+##### Generate a Credential
 
 Once this has finished, you are almost ready to install the bundle. Before you install, however, you'll need to generate a credential. To do this, we'll use the `porter credentials generate` command:
 
@@ -73,7 +125,7 @@ For the three digital ocean credentials, select `environment variable` and provi
 Enter the path that will be used to set credential "kubeconfig" $HOME/.kube/config
 ```
 
-### Install The Bundle
+#### Install The Bundle
 
 Now that you have build the bundle and generated a credential, you are ready to install the bundle. To do that, we'll use the `porter install` command. You'll need to pick a value for the `space_name` and `database_name` parameter.
 
