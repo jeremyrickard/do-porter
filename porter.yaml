@@ -1,45 +1,56 @@
 # See https://porter.sh/authoring-bundles for documentation on how to configure your bundle
 
 name: spring-music
-version: 0.4.0
+version: 0.4.1
 description: "Run the Spring Music Service on Kubernetes and Digital Ocean PostgreSQL"
-invocationImage: jeremyrickard/porter-do:v0.4.0
-tag: jeremyrickard/porter-do-bundle:v0.4.0
+invocationImage: jeremyrickard/porter-do:v0.4.1
+tag: jeremyrickard/porter-do-bundle:v0.4.1
 
 dockerfile: Dockerfile.tmpl
 
 credentials:
 - name: do_access_token
+  description: "Access Token for Digital Ocean Account"
   env: DO_ACCESS_TOKEN
 - name: do_spaces_key
+  description: "DO Spaces API Key"
   env: DO_SPACES_KEY
 - name: do_spaces_secret
+  description: "DO Spaces API Secret"
   env: DO_SPACES_SECRET
 - name: kubeconfig
+  description: "Kube config file with permissions to deploy app"
   path: /root/.kube/config
 
 parameters:
 - name: region
+  description: "Region to create Database and DO Space"
   type: string
   default: "nyc3"
 - name: space_name
+  description: "Name for DO Space"
   type: string
   default: "jrrportertest"
 - name: database_name
+  description: "Name of database to create"
   type: string
   default: "jrrportertest"
 - name: node_count
   type: integer
+  description: "Number of database nodes"
   default: 1
 - name: namespace
+  description: "Namespace to install Spring Music app" 
   type: string
   default: "default"
 - name: helm_release
+  description: "Helm release name" 
   type: string
   default: "spring-music-helm"
 
 outputs:
 - name: service_ip
+  description: "IP Address assigned to the Load Balancer"
   type: string
 
 mixins:
