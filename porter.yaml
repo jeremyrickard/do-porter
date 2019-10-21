@@ -52,6 +52,9 @@ outputs:
 - name: service_ip
   description: "IP Address assigned to the Load Balancer"
   type: string
+  applyTo: 
+  - install
+  - upgrade 
 
 mixins:
   - exec
