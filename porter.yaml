@@ -1,10 +1,10 @@
 # See https://porter.sh/authoring-bundles for documentation on how to configure your bundle
 
 name: spring-music
-version: 0.5.0
+version: 0.7.0
 description: "Run the Spring Music Service on Kubernetes and Digital Ocean PostgreSQL"
-invocationImage: jeremyrickard/porter-do:v0.5.0
-tag: jeremyrickard/porter-do-bundle:v0.5.0
+invocationImage: jeremyrickard/porter-do:v0.7.0
+tag: jeremyrickard/porter-do-bundle:v0.7.0
 
 dockerfile: Dockerfile.tmpl
 
@@ -66,7 +66,8 @@ images:
       description: "Spring Music Example"
       imageType: "docker"
       repository: "jeremyrickard/spring-music"
-      digest: "sha256:8f1133d81f1b078c865cdb11d17d1ff15f55c449d3eecca50190eed0f5e5e26f"
+      tag: "v1.0.0"
+      #digest: "sha256:8f1133d81f1b078c865cdb11d17d1ff15f55c449d3eecca50190eed0f5e5e26f"
 
 install:
   - exec:
